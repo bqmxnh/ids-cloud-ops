@@ -1,12 +1,10 @@
-name: Build, Push and Deploy IDS API
+name: Build and Push API Image
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - "api/**"
-      - "charts/ids-api/**"
 
 jobs:
   build:
@@ -16,24 +14,20 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Login to DockerHub
+    - name: Log in to DockerHub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-    - name: Build & Push Image
+    - name: Build image
       run: |
-        TAG=${{ github.sha }}
-        docker build -t bqmxnh/ids-cloud-api:$TAG ./api
-        docker push bqmxnh/ids-cloud-api:$TAG
+        IMAGE_TAG=${{ github.sha }}
+        docker build -t bqmxnh/ids-cloud-api:$IMAGE_TAG ./api
 
-    - name: Update Helm Chart with new image tag
+    - name: Push image
       run: |
-        TAG=${{ github.sha }}
-        sed -i "s|tag:.*|tag: \"$TAG\"|" charts/ids-api/values.yaml
+        IMAGE_TAG=${{ github.sha }}
+        docker push bqmxnh/ids-cloud-api:$IMAGE_TAG
 
-    - name: Commit changes to Helm chart
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "actions@github.com"
-        git add charts/ids-api/values.yaml
-        git commit -m "Update image tag to ${{ github.sha }}" || echo "No changes to commit"
-        git push || echo "No changes to push"
+    - name: Call update-helm workflow
+      uses: bqmxnh/ids-cloud-ops/.github/workflows/update-helm.yaml@main
+      with:
+        image_tag: ${{ github.sha }}
