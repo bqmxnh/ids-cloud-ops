@@ -7,7 +7,7 @@ from app.utils.preprocess import sanitize
 
 router = APIRouter()
 
-@router.post("/", response_model=PredictionResponse)
+@router.post("", response_model=PredictionResponse)
 def predict(flow: FlowSchema):
     start = time.time()
 
