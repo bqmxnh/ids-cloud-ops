@@ -11,23 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Log in to DockerHub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Login DockerHub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | \
+          docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-    - name: Build image
-      run: |
-        IMAGE_TAG=${{ github.sha }}
-        docker build -t bqmxnh/ids-cloud-api:$IMAGE_TAG ./api
+      - name: Build Docker image (latest)
+        run: |
+          docker build -t bqmxnh/ids-cloud-api:latest ./api
 
-    - name: Push image
-      run: |
-        IMAGE_TAG=${{ github.sha }}
-        docker push bqmxnh/ids-cloud-api:$IMAGE_TAG
-
-    - name: Call update-helm workflow
-      uses: bqmxnh/ids-cloud-ops/.github/workflows/update-helm.yaml@main
-      with:
-        image_tag: ${{ github.sha }}
+      - name: Push Docker image (latest)
+        run: |
+          docker push bqmxnh/ids-cloud-api:latest
