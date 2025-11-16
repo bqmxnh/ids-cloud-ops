@@ -12,3 +12,5 @@ LATENCY = Histogram("prediction_latency_ms", "Prediction latency (ms)")
 @router.get("/metrics")
 def metrics():
     return PlainTextResponse(generate_latest(), media_type="text/plain")
+
+metrics_router = router
