@@ -14,7 +14,7 @@ jobs:
     - name: Update Helm values with new image tag
       run: |
         IMAGE_TAG=${{ github.sha }}
-        sed -i "s|tag: .*|tag: \"$IMAGE_TAG\"|g" chart/ids-api/value.yaml
+        sed -i "s|tag: .*|tag: \"$IMAGE_TAG\"|g" charts/ids-api/value.yaml
 
     - name: Commit changes
       run: |
