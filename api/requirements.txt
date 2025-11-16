@@ -1,6 +1,9 @@
-fastapi
-uvicorn
-joblib
 boto3
+fastapi
+uvicorn[standard]
 river
+scikit-learn
+pandas
+mlflow
+joblib
 prometheus_client
