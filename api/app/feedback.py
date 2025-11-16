@@ -6,7 +6,7 @@ from app.utils.preprocess import sanitize
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("")
 def feedback(data: FeedbackSchema):
     FEEDBACK_COUNT.inc()
 
