@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: bqmxnh/ids-cloud-api
-  tag: "dev"
+  tag: "latest"
   pullPolicy: Always
 
 service:
