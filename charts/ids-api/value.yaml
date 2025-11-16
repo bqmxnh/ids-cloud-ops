@@ -11,8 +11,13 @@ service:
 
 ingress:
   enabled: true
+  className: "alb"
   host: "api.qmuit.id.vn"
   path: "/"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
 
 env:
   MODEL_BUCKET: "arf-ids-model-bucket"

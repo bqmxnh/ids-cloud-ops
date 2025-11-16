@@ -5,7 +5,7 @@ metadata:
   labels:
     app: ids-api
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ if not .Values.autoscaling.enabled }}{{ .Values.replicaCount }}{{ end }}
   selector:
     matchLabels:
       app: ids-api

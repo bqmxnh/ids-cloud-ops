@@ -2,10 +2,7 @@ name: Update Helm Chart
 
 on:
   push:
-    paths:
-      - "charts/**"
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   update:
@@ -14,9 +11,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Commit Helm chart update
+    - name: Update Helm values with new image tag
+      run: |
+        IMAGE_TAG=${{ github.sha }}
+        sed -i "s|tag: .*|tag: \"$IMAGE_TAG\"|g" chart/ids-api/value.yaml
+
+    - name: Commit changes
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "actions@github.com"
-        git commit -am "Update Helm chart" || echo "Nothing to commit"
-        git push || echo "Nothing to push"
+        git commit -am "Update image tag to $IMAGE_TAG" || echo "No changes"
+        git push || echo "No changes to push"
