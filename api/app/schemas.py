@@ -30,3 +30,4 @@ class PredictionResponse(BaseModel):
     prediction: str
     confidence: float
     latency_ms: float   # <-- BỔ SUNG BẮT BUỘC
+#
