@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+joblib
+boto3
+river
+prometheus_client

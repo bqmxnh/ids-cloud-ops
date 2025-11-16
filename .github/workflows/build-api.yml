@@ -1,0 +1,25 @@
+name: Build and Push API Image
+
+on:
+  push:
+    paths:
+      - "api/**"
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Login DockerHub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+    - name: Build Docker image
+      run: docker build -t bqmxnh/ids-cloud-api:latest ./api
+
+    - name: Push Docker Image
+      run: docker push bqmxnh/ids-cloud-api:latest

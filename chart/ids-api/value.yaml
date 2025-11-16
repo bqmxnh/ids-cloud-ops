@@ -1,0 +1,33 @@
+replicaCount: 2
+
+image:
+  repository: bqmxnh/ids-cloud-api
+  tag: "latest"
+  pullPolicy: Always
+
+service:
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: true
+  host: "api.qmuit.id.vn"
+  path: "/"
+
+env:
+  MODEL_BUCKET: "arf-ids-model-bucket"
+  MODEL_VERSION: "v1.0"
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "1Gi"
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 60

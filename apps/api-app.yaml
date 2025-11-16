@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ids-api
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/bqmxnh/ids-cloud-ops.git"
+    targetRevision: HEAD
+    path: charts/ids-api
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
